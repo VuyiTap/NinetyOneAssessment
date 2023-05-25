@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 public class Program
 {
     public static void Main()
     {
-        // CSV data stored as a string
-        string csvData = "FirstName,SecondName,Score\nDee,Moore,56\nSipho,Lolo,78\nNoosrat,Hoosain,64\nGeorge,Of The Jungle,78";
+        // Read the CSV data from a plain-text file
+        string csvData = ReadCSVFromFile("TestData.csv");
 
         // Parse the CSV data into a list of string arrays representing rows
         List<string[]> dataRows = ParseCSV(csvData);
@@ -22,12 +23,30 @@ public class Program
             {
                 Console.WriteLine($"{row[0]} {row[1]}");
             }
-            Console.WriteLine($"Score:{highestScorers[0][2]}");
+
+            Console.WriteLine($"Highest score: {highestScorers[0][2]}");
         }
         else
         {
             Console.WriteLine("No highest scorers found.");
         }
+    }
+
+    // Read CSV data from a plain-text file
+    private static string ReadCSVFromFile(string filePath)
+    {
+        string csvData = string.Empty;
+
+        try
+        {
+            csvData = File.ReadAllText(filePath);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error reading CSV file: {ex.Message}");
+        }
+
+        return csvData;
     }
 
     // Parse the CSV data into a list of string arrays representing rows
@@ -85,6 +104,7 @@ public class Program
         highestScorers.Sort((a, b) => string.Compare(a[0] + a[1], b[0] + b[1], StringComparison.Ordinal));
 
         // Return the list of highest scorers
-        return highestScorers;
-    }
+        return highestScorers
 }
+}
+
